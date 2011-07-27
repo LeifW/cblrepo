@@ -18,7 +18,7 @@ module Add where
 
 -- {{{1 imports
 -- {{{2 local
-import PkgDB
+import OldPkgDB
 import Util.Misc
 
 -- {{{2 system
