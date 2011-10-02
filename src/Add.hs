@@ -92,6 +92,7 @@ addNoneBase = do
     dR <- cfgGet dryRun
     genPkgs <- liftIO $ mapM (\ c -> withTemporaryDirectory "/tmp/cblrepo." (readCabal pD c)) cbls
     let pkgNames = map ((\ (P.PackageName n) -> n ) . P.pkgName . package . packageDescription) genPkgs
+    liftIO $ when (or . catMaybes $ map (\ p -> liftM isBasePkg $ lookupPkg db p) pkgNames) (putStrLn "Trying to add base pkg!!" >> exitFailure)
     let tmpDb = filter (\ p -> not $ pkgName p `elem` pkgNames) db
     case doAdd tmpDb genPkgs of
         Left (unSats, brksOthrs) -> liftIO (mapM_ printUnSat unSats >> mapM_ printBrksOth brksOthrs)
